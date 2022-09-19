@@ -55,7 +55,7 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
 
 // MARK: - Initializers
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 10.15, *)
 extension ACarousel {
     
     /// Creates an instance that uniquely identifies and creates views across
@@ -82,7 +82,7 @@ extension ACarousel {
     
 }
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 10.15, *)
 extension ACarousel where ID == Data.Element.ID, Data.Element : Identifiable {
     
     /// Creates an instance that uniquely identifies and creates views across
