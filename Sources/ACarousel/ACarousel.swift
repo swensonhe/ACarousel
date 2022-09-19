@@ -21,7 +21,7 @@
 import SwiftUI
 
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 10.15, *)
 public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessCollection, ID : Hashable, Content : View {
     
     @ObservedObject
