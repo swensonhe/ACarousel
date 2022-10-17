@@ -36,7 +36,7 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
     }
     
     private func generateContent(proxy: GeometryProxy) -> some View {
-        LazyHStack(spacing: viewModel.spacing) {
+        HStack(spacing: viewModel.spacing) {
             ForEach(viewModel.data, id: viewModel.dataId) {
                 content($0)
                     .frame(width: viewModel.itemWidth)
