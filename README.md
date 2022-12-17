@@ -29,7 +29,7 @@ A carousel view for SwiftUI
 
 ## Requirements
 
-- iOS 13.0+ / macOS 10.15+ / tvOS 13.0+
+- iOS 14.0+ / macOS 11.0+ / tvOS 14.0+
 - Xcode 11.0+
 - Swift 5.1+
 
