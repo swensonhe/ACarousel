@@ -31,7 +31,7 @@ typealias Application = UIApplication
 
 /// Monitor and receive application life cycles,
 /// inactive or active
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 11.0, *)
 struct AppLifeCycleModifier: ViewModifier {
     
     let active = NotificationCenter.default.publisher(for: Application.didBecomeActiveNotification)
@@ -55,7 +55,7 @@ struct AppLifeCycleModifier: ViewModifier {
     }
 }
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 11.0, *)
 extension View {
     func onReceiveAppLifeCycle(perform action: @escaping (Bool) -> ()) -> some View {
         self.modifier(AppLifeCycleModifier(action))

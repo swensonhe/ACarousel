@@ -21,7 +21,7 @@
 import SwiftUI
 import Combine
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 11.0, *)
 class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCollection, ID : Hashable {
     
     /// external index
@@ -36,13 +36,15 @@ class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCo
     private let _sidesScaling: CGFloat
     private let _autoScroll: ACarouselAutoScroll
     private let _canMove: Bool
+    private let _useLazyHStack: Bool
     
-    init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool) {
+    init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool) {
         
         guard index.wrappedValue < data.count else {
             fatalError("The index should be less than the count of data ")
         }
         
+        self._useLazyHStack = useLazyHStack
         self._data = data
         self._dataId = id
         self._spacing = spacing
@@ -102,15 +104,15 @@ class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCo
     
 }
 
-
+@available(iOS 14.0, OSX 11.0, *)
 extension ACarouselViewModel where ID == Data.Element.ID, Data.Element : Identifiable {
     
-    convenience init(_ data: Data, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool) {
-        self.init(data, id: \.id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove)
+    convenience init(_ data: Data, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool) {
+        self.init(data, id: \.id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack)
     }
 }
 
-
+@available(iOS 14.0, OSX 11.0, *)
 extension ACarouselViewModel {
     
     var data: Data {
@@ -132,6 +134,10 @@ extension ACarouselViewModel {
     
     var spacing: CGFloat {
         return _spacing
+    }
+    
+    var useLazyHStack: Bool {
+        return _useLazyHStack
     }
     
     var offsetAnimation: Animation? {
@@ -164,6 +170,7 @@ extension ACarouselViewModel {
     }
 }
 
+@available(iOS 14.0, OSX 11.0, *)
 // MARK: - private variable
 extension ACarouselViewModel {
     
@@ -196,6 +203,7 @@ extension ACarouselViewModel {
     }
 }
 
+@available(iOS 14.0, OSX 11.0, *)
 // MARK: - Offset Method
 extension ACarouselViewModel {
     /// current offset value
@@ -228,6 +236,7 @@ extension ACarouselViewModel {
     }
 }
 
+@available(iOS 14.0, OSX 11.0, *)
 // MARK: - Drag Gesture
 extension ACarouselViewModel {
     /// drag gesture of view
@@ -285,6 +294,7 @@ extension ACarouselViewModel {
     }
 }
 
+@available(iOS 14.0, OSX 11.0, *)
 // MARK: - Receive Timer
 extension ACarouselViewModel {
     
@@ -327,6 +337,7 @@ extension ACarouselViewModel {
 }
 
 
+@available(iOS 14.0, OSX 11.0, *)
 private extension UserDefaults {
 
     private struct Keys {

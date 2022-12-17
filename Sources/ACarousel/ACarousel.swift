@@ -20,7 +20,7 @@
 
 import SwiftUI
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 10.15, *)
 public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessCollection, ID : Hashable, Content : View, Data.Element : Identifiable {
     
     @ObservedObject
@@ -35,11 +35,15 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
     }
     
     private func generateContent(proxy: GeometryProxy) -> some View {
-        HStack(spacing: viewModel.spacing) {
-            ForEach(Array(zip(viewModel.data.indices, viewModel.data)), id: \.1.id) { index, item in
-                content(index, item)
-                    .frame(width: viewModel.itemWidth)
-                    .scaleEffect(x: 1, y: viewModel.itemScaling(item), anchor: .center)
+        Group {
+            if viewModel.useLazyHStack {
+                LazyHStack(spacing: viewModel.spacing) {
+                    mainContent
+                }
+            } else {
+                HStack(spacing: viewModel.spacing) {
+                    mainContent
+                }
             }
         }
         .frame(width: proxy.size.width, height: proxy.size.height, alignment: .leading)
@@ -49,12 +53,20 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
         .onReceive(timer: viewModel.timer, perform: viewModel.receiveTimer)
         .onReceiveAppLifeCycle(perform: viewModel.setTimerActive)
     }
+    
+    private var mainContent: some View {
+        ForEach(Array(zip(viewModel.data.indices, viewModel.data)), id: \.1.id) { index, item in
+            content(index, item)
+                .frame(width: viewModel.itemWidth)
+                .scaleEffect(x: 1, y: viewModel.itemScaling(item), anchor: .center)
+            }
+    }
 }
 
 
 // MARK: - Initializers
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 11.0, *)
 extension ACarousel {
     
     /// Creates an instance that uniquely identifies and creates views across
@@ -73,15 +85,15 @@ extension ACarousel {
     ///   - autoScroll: A enum that define view to scroll automatically. See
     ///     ``ACarouselAutoScroll``. default is `inactive`.
     ///   - content: The view builder that creates views dynamically.
-    public init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
+    public init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
         
-        self.viewModel = ACarouselViewModel(data, id: id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove)
+        self.viewModel = ACarouselViewModel(data, id: id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack)
         self.content = content
     }
     
 }
 
-@available(iOS 13.0, OSX 10.15, *)
+@available(iOS 14.0, OSX 11.0, *)
 extension ACarousel where ID == Data.Element.ID, Data.Element : Identifiable {
     
     /// Creates an instance that uniquely identifies and creates views across
@@ -99,9 +111,9 @@ extension ACarousel where ID == Data.Element.ID, Data.Element : Identifiable {
     ///   - autoScroll: A enum that define view to scroll automatically. See
     ///     ``ACarouselAutoScroll``. default is `inactive`.
     ///   - content: The view builder that creates views dynamically.
-    public init(_ data: Data, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
+    public init(_ data: Data, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
         
-        self.viewModel = ACarouselViewModel(data, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove)
+        self.viewModel = ACarouselViewModel(data, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack)
         self.content = content
     }
     
