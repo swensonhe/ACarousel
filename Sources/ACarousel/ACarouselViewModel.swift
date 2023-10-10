@@ -37,8 +37,9 @@ class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCo
     private let _autoScroll: ACarouselAutoScroll
     private let _canMove: Bool
     private let _useLazyHStack: Bool
+    private let _verticalAlignment: VerticalAlignment
     
-    init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool) {
+    init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool, verticalAlignment: VerticalAlignment) {
         
         guard index.wrappedValue < data.count else {
             fatalError("The index should be less than the count of data ")
@@ -53,6 +54,7 @@ class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCo
         self._sidesScaling = sidesScaling
         self._autoScroll = autoScroll
         self._canMove = canMove
+        self._verticalAlignment = verticalAlignment
         
         if data.count > 1 && isWrap {
             activeIndex = index.wrappedValue + 1
@@ -107,8 +109,8 @@ class ACarouselViewModel<Data, ID>: ObservableObject where Data : RandomAccessCo
 @available(iOS 14.0, OSX 11.0, *)
 extension ACarouselViewModel where ID == Data.Element.ID, Data.Element : Identifiable {
     
-    convenience init(_ data: Data, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool) {
-        self.init(data, id: \.id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack)
+    convenience init(_ data: Data, index: Binding<Int>, spacing: CGFloat, headspace: CGFloat, sidesScaling: CGFloat, isWrap: Bool, autoScroll: ACarouselAutoScroll, canMove: Bool, useLazyHStack: Bool, verticalAlignment: VerticalAlignment) {
+        self.init(data, id: \.id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack, verticalAlignment: verticalAlignment)
     }
 }
 
@@ -138,6 +140,10 @@ extension ACarouselViewModel {
     
     var useLazyHStack: Bool {
         return _useLazyHStack
+    }
+    
+    var verticalAlignment: VerticalAlignment {
+        return _verticalAlignment
     }
     
     var offsetAnimation: Animation? {
