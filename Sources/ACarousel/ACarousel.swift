@@ -37,21 +37,12 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
     private func generateContent(proxy: GeometryProxy) -> some View {
         Group {
             if viewModel.useLazyHStack {
-<<<<<<< HEAD
-                LazyHStack(spacing: viewModel.spacing) {
-                    mainContent
-                }
-            } else {
-                HStack(spacing: viewModel.spacing) {
-                    mainContent
-=======
                 LazyHStack(alignment: viewModel.verticalAlignment, spacing: viewModel.spacing) {
-                    self.mainContent
+                    mainContent
                 }
             } else {
                 HStack(alignment: viewModel.verticalAlignment, spacing: viewModel.spacing) {
-                    self.mainContent
->>>>>>> 6e3a16d (added option to set the hstack or lazy hstack  alignment)
+                    mainContent
                 }
             }
         }
@@ -68,7 +59,7 @@ public struct ACarousel<Data, ID, Content> : View where Data : RandomAccessColle
             content(index, item)
                 .frame(width: viewModel.itemWidth)
                 .scaleEffect(x: 1, y: viewModel.itemScaling(item), anchor: .center)
-            }
+        }
     }
 }
 
@@ -94,12 +85,7 @@ extension ACarousel {
     ///   - autoScroll: A enum that define view to scroll automatically. See
     ///     ``ACarouselAutoScroll``. default is `inactive`.
     ///   - content: The view builder that creates views dynamically.
-<<<<<<< HEAD
-    public init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
-=======
-    public init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, verticalAlignment: VerticalAlignment = .center, @ViewBuilder content: @escaping (Data.Element) -> Content) {
->>>>>>> 6e3a16d (added option to set the hstack or lazy hstack  alignment)
-        
+    public init(_ data: Data, id: KeyPath<Data.Element, ID>, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, verticalAlignment: VerticalAlignment = .center, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
         self.viewModel = ACarouselViewModel(data, id: id, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack, verticalAlignment: verticalAlignment)
         self.content = content
     }
@@ -124,11 +110,7 @@ extension ACarousel where ID == Data.Element.ID, Data.Element : Identifiable {
     ///   - autoScroll: A enum that define view to scroll automatically. See
     ///     ``ACarouselAutoScroll``. default is `inactive`.
     ///   - content: The view builder that creates views dynamically.
-<<<<<<< HEAD
-    public init(_ data: Data, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
-=======
-    public init(_ data: Data, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, verticalAlignment: VerticalAlignment = .center, @ViewBuilder content: @escaping (Data.Element) -> Content) {
->>>>>>> 6e3a16d (added option to set the hstack or lazy hstack  alignment)
+    public init(_ data: Data, index: Binding<Int> = .constant(0), spacing: CGFloat = 10, headspace: CGFloat = 10, sidesScaling: CGFloat = 0.8, isWrap: Bool = false, autoScroll: ACarouselAutoScroll = .inactive, canMove: Bool = true, useLazyHStack: Bool = false, verticalAlignment: VerticalAlignment = .center, @ViewBuilder content: @escaping (Data.Index, Data.Element) -> Content) {
         
         self.viewModel = ACarouselViewModel(data, index: index, spacing: spacing, headspace: headspace, sidesScaling: sidesScaling, isWrap: isWrap, autoScroll: autoScroll, canMove: canMove, useLazyHStack: useLazyHStack, verticalAlignment: verticalAlignment)
         self.content = content
