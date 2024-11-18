@@ -232,7 +232,7 @@ extension ACarouselViewModel {
 extension ACarouselViewModel {
     /// drag gesture of view
     var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 16)
+        DragGesture(minimumDistance: 24)
             .onChanged(dragChanged)
             .onEnded(dragEnded)
     }
